@@ -148,6 +148,11 @@ export async function downloadMedia(options: {
     "yt_dlp",
     "--no-playlist",
     "--no-warnings",
+    "-N",
+    "8", // Multi-threaded parallel downloading (8 chunks) for maximum speed
+    "--buffer-size",
+    "16K",
+    "--no-mtime",
     ...cookiesArgs,
   ];
 
@@ -177,6 +182,8 @@ export async function downloadMedia(options: {
       formatFilter,
       "--merge-output-format",
       "mp4",
+      "--postprocessor-args",
+      "ffmpeg:-threads 4",
       "-o",
       outTemplate,
       normalizedUrl
