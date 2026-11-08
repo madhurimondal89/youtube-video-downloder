@@ -45,7 +45,7 @@ export function FormatSelector({ info, url }: FormatSelectorProps) {
     // Reset status after triggering
     setTimeout(() => {
       setDownloadingFormat(null);
-    }, 4000);
+    }, 12000);
   };
 
   const handleDownloadAudio = (bitrate: string) => {
@@ -63,7 +63,7 @@ export function FormatSelector({ info, url }: FormatSelectorProps) {
 
     setTimeout(() => {
       setDownloadingFormat(null);
-    }, 4000);
+    }, 10000);
   };
 
   return (

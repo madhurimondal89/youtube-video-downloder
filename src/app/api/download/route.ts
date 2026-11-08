@@ -81,6 +81,11 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    // Safe ASCII fallback for standard filename parameter, plus RFC 5987 UTF-8 encoded filename
+    const asciiFallback = finalName
+      .replace(/[^\x20-\x7E]/g, "")
+      .replace(/["\\]/g, "")
+      .trim() || `download${ext}`;
     const encodedFilename = encodeURIComponent(finalName);
 
     return new Response(webStream, {
@@ -88,7 +93,7 @@ export async function GET(req: NextRequest) {
       headers: {
         "Content-Type": mimeType,
         "Content-Length": stat.size.toString(),
-        "Content-Disposition": `attachment; filename="${finalName}"; filename*=UTF-8''${encodedFilename}`,
+        "Content-Disposition": `attachment; filename="${asciiFallback}"; filename*=UTF-8''${encodedFilename}`,
         "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     });
