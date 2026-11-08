@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Clock, Eye, User, ExternalLink } from "lucide-react";
+import { Clock, Eye, User, ExternalLink, Image as ImageIcon } from "lucide-react";
 import { VideoInfo } from "@/lib/ytdlp-runner";
 
 interface VideoPreviewCardProps {
@@ -79,17 +79,30 @@ export function VideoPreviewCard({ info }: VideoPreviewCardProps) {
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+          <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
             <span>Video ID: <span className="font-mono text-slate-400">{info.id}</span></span>
-            <a
-              href={`https://www.youtube.com/watch?v=${info.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-red-400 hover:text-red-300 flex items-center gap-1 transition"
-            >
-              <span>Watch on YouTube</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+            <div className="flex items-center gap-3">
+              <a
+                href={`https://img.youtube.com/vi/${info.id}/maxresdefault.jpg`}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={`${info.id}-thumbnail.jpg`}
+                className="text-amber-400 hover:text-amber-300 flex items-center gap-1 transition"
+                title="Open / Download HD Thumbnail"
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                <span>HD Thumbnail</span>
+              </a>
+              <a
+                href={`https://www.youtube.com/watch?v=${info.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-400 hover:text-red-300 flex items-center gap-1 transition"
+              >
+                <span>Watch on YouTube</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

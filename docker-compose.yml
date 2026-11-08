@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  youtube-downloader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: youtube-downloader-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      - temp_data:/app/.temp_downloads
+
+volumes:
+  temp_data:
