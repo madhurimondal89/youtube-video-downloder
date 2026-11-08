@@ -12,3 +12,4 @@ export function YoutubeIcon({ className = "w-6 h-6" }: { className?: string }) {
     </svg>
   );
 }
+
