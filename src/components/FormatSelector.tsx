@@ -15,21 +15,16 @@ export function FormatSelector({ info, url }: FormatSelectorProps) {
   const [downloadingFormat, setDownloadingFormat] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  // Standard resolutions including 4K (2160p) and 2K (1440p)
+  // Standard resolutions including 4K (2160p) and 2K (1440p) always available in the downloader options
   const standardResolutions = [2160, 1440, 1080, 720, 480, 360];
-  const maxAvailable = (info.availableResolutions && info.availableResolutions.length > 0)
-    ? Math.max(...info.availableResolutions)
-    : 1080;
 
-  // Include 4K/2K if available in video or up to max available resolution
-  const resolutionsToDisplay = (info.availableResolutions && info.availableResolutions.length > 0)
-    ? Array.from(
-        new Set([
-          ...info.availableResolutions.filter((r) => [2160, 1440, 1080, 720, 480, 360].includes(r)),
-          ...standardResolutions.filter((r) => r <= maxAvailable),
-        ])
-      ).sort((a, b) => b - a)
-    : standardResolutions;
+  // Always show 4K (2160p), 2K (1440p), 1080p, 720p, 480p, 360p in the list
+  const resolutionsToDisplay = Array.from(
+    new Set([
+      ...(info.availableResolutions || []).filter((r) => [2160, 1440, 1080, 720, 480, 360].includes(r)),
+      ...standardResolutions,
+    ])
+  ).sort((a, b) => b - a);
 
   const audioOptions = [
     { bitrate: "320", label: "Ultra High Quality", desc: "320 kbps MP3", badge: "Best Quality" },
@@ -119,7 +114,7 @@ export function FormatSelector({ info, url }: FormatSelectorProps) {
           }`}
         >
           <Film className="w-4 h-4" />
-          <span>Video (MP4 / 4K)</span>
+          <span>Video (MP4)</span>
         </button>
 
         <button
@@ -141,7 +136,7 @@ export function FormatSelector({ info, url }: FormatSelectorProps) {
         <div className="space-y-3">
           <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
             <span>Select Video Resolution (Guaranteed Full Sound)</span>
-            {maxAvailable >= 2160 && (
+            {(info.availableResolutions || []).some((r) => r >= 2160) && (
               <span className="text-purple-400 text-[11px] font-bold flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
                 4K Available
